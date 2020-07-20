@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Database\Eloquent\Builder;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -27,14 +27,16 @@ $router->post(
 );
 
 $router->group(
-  ['middleware' => ['jwt.auth'  ]], 
+  ['middleware' => ['jwt.auth', 'role:admin']], 
   function() use ($router) {
     $router->get('users', function() {
-      $users = \App\User::with('role', 'profiles')->get();
+      $users = \App\User::with(['role:id,role', 'profiles:id,name,lastname,user_id'])->get();
+      $just = \App\User::get();
       $role  = \App\Role::with('users')->get();
       return response()->json([
         'users' => $users,
-        'role' => $role
+        'just_users' => $just,
+        'role' => $role,
       ]);
     });
   }

@@ -39,6 +39,7 @@ class AuthController extends BaseController
     $payload = [
       'iss' => "lumen-jwt", // Issuer of the token
       'sub' => $user->id, // Subject of the token
+      'role' => $user->role['role'],
       'iat' => time(), // Time when JWT was issued. 
       'exp' => time() + 60*60 // Expiration time
     ];
@@ -58,6 +59,7 @@ class AuthController extends BaseController
     $payload = [
       'iss' => "lumen-jwt", // Issuer of the token
       'sub' => $user->id, // Subject of the token
+      'role' => $user->role['role'],
       'iat' => time(), // Time when JWT was issued. 
       'exp' => time() + 1800*60 // Expiration time
     ];
@@ -80,8 +82,8 @@ class AuthController extends BaseController
     ]);
 
     // Find the user by email
-    $user = User::where('email', $this->request->input('email'))->first();
-    
+    $user = User::with(['role', 'profiles'])->where('email', $this->request->input('email'))->first();
+
     if (!$user) {
       // You wil probably have some sort of helpers or whatever
       // to make sure that you have the same response format for

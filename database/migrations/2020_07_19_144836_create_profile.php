@@ -14,7 +14,7 @@ class CreateProfile extends Migration
     public function up()
     {
         DB::statement('
-            CREATE TABLE `lumen_model`.`profiles` (
+            CREATE TABLE `profiles` (
             `id` INT NOT NULL AUTO_INCREMENT,
             `user_id` INT NULL,
             `name` VARCHAR(45) NULL,

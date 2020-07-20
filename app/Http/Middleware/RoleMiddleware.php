@@ -14,7 +14,8 @@ class RoleMiddleware {
 			$roles = explode(self::DELIMITER, $roles);
     }
 
-    if (!in_array($request->auth->role, $roles)) {
+    $roleName = $request->auth->role['role'];
+    if (!in_array($roleName, $roles)) {
       return response()->json([
 				'error' => 'Access denied.'
 			], 403);
